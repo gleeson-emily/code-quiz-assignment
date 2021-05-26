@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Quiz</title>
-    <link rel="stylesheet" href=".style.css">
+    <link rel="stylesheet" href="./style.css">
   </head>
   <body>
       <h1>Code Quiz!</h1>
     <div id="timerDiv">
     </div>
-    <div ><p id="questionSection">Test out your knowledge of JavaScript by taking our code quiz. You have 100 seconds, but watch out - if you get questions wrong, you'll lose some time!</p></div>
-    <button type="button" id="questionStart">Start Quiz!</button>
-  </body>
+    <section class= quiz-body>
+    <div><p id="questions">Test out your knowledge of JavaScript by taking our code quiz. You have 100 seconds, but watch out - if you get questions wrong, you'll lose some time!</p></div>
+    <div class="answersList" id="answers">
+      <button type="button" id="button1">button 1</button>
+      <button type="button" id="button2">button 2</button>
+      <button type="button" id="button3">button 3</button>
+      <button type="button" id="button4">button 4</button>
+    </div>
+    <button type="button" id="question-start">Start Quiz!</button>
+  </section>
   
   
   
@@ -28,14 +35,6 @@
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  </html>
+<script type="text/javascript" src="logic.js"></script>  
+</body>
+</html>
