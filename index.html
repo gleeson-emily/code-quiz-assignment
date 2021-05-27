@@ -10,13 +10,15 @@
       <h1>Code Quiz!</h1>
     <div id="timerDiv">
     </div>
-    <section class= quiz-body>
+    <section class="quiz-body" id="quiz-body">
     <div><p id="questions">Test out your knowledge of JavaScript by taking our code quiz. You have 100 seconds, but watch out - if you get questions wrong, you'll lose some time!</p></div>
-    <div class="answersList" id="answers">
-      <button type="button" id="button1">button 1</button>
-      <button type="button" id="button2">button 2</button>
-      <button type="button" id="button3">button 3</button>
-      <button type="button" id="button4">button 4</button>
+    <div class="answersList" id="answersList">
+      <ul id="answers">
+        <li id="answer1"></li>
+        <li id="answer2"></li>
+        <li id="answer3"></li>
+        <li id="answer4"></li>
+      </ul>
     </div>
     <button type="button" id="question-start">Start Quiz!</button>
   </section>
@@ -35,6 +37,6 @@
   
   
   
-<script type="text/javascript" src="logic.js"></script>  
+<script src="logic.js"></script>  
 </body>
 </html>
