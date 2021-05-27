@@ -1,5 +1,6 @@
 //functions: timer function, start all function, game function
 
+//variables
 var startButton = document.getElementById("question-start");
 var questionSection = document.getElementById("questions");
 var quizBody = document.getElementById("quiz-body");
@@ -9,9 +10,11 @@ var answer2 = document.getElementById("answer2");
 var answer3 = document.getElementById("answer3");
 var answer4 = document.getElementById("answer4");
 var timerCountdown = document.getElementById("timer-div");
-var timeLeft = 75;
+var timerCountdownMessage = document.getElementById("timer-message")
+var timeLeft = 76;
 var penalty = 0;
 
+//questions for the quiz
 const quizQuestions = [
     { 
     question: "How do you create a new variable in JavaScript?",
@@ -37,15 +40,16 @@ const quizQuestions = [
 
 var questionIndex = 0;
 
-
+//console.logs to make sure my questions were working correctly
 //console.log(quizQuestions)
 //console.log(quizQuestions[3].question)
 //console.log(quizQuestions[4].choices[2])
 
 
 
-
+//brings up the questions and answers - issue with line 61 (only first two options are clickable)
 function displayQuestion () {
+    timer();
     document.querySelector("#question-start").style.display="none";
     document.querySelector("#answersList").style.visibility="visible";
     var questionOutput = quizQuestions[questionIndex].question;
@@ -56,15 +60,21 @@ function displayQuestion () {
     answer2.textContent = (quizQuestions[questionIndex].choices[1]);
     answer3.textContent = (quizQuestions[questionIndex].choices[2]);
     answer4.textContent = (quizQuestions[questionIndex].choices[3]);
-    document.querySelector("li").addEventListener("click", checkAnswers); }
+     }
 
-
-
+//adds event listener to each list item - for loop to cycle through
+  var clickingAnswers = document.querySelectorAll("li")
+  for (i = 0; i < clickingAnswers.length; i++) {
+      clickingAnswers[i].addEventListener("click", checkAnswers);
+  }
+  
+//checking if answers are correct
 function checkAnswers(event) {
-    var rightAnswer = event.target;
+    var rightAnswer = event.target.textContent;
+    console.log(rightAnswer);
     var answerMessage = document.createElement("p")
     document.body.append(answerMessage);
-        if (rightAnswer == quizQuestions[questionIndex].correctAnswer) {
+        if (rightAnswer === quizQuestions[questionIndex].correctAnswer) {
             answerMessage.textContent = "Correct!"
     }
     else {
@@ -72,27 +82,24 @@ function checkAnswers(event) {
         //penalty = (timeLeft - 10);
    
     }
+    questionIndex++; 
+    displayQuestion();
 }
-   
-   
-//
-   
-
-
-
+ 
     
-
-    
-
+//timer function (incomplete)
     function timer() {
-
+          timeLeft--;  
         if (timeLeft >= 1) {
-         timerCountdown.textContent = "Timer: " + timeLeft;
+         timerCountdownMessage.textContent = "Timer: " + timeLeft;
         } else {
-            return;
+            return
         }
-      1000;  
-    }
+  1000;   }
+  
+    
 
 document.addEventListener("click", displayQuestion)
 //insert function to start timer when this is pushed
+
+//still need to add high scores function + local storage
