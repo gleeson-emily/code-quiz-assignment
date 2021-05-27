@@ -12,7 +12,8 @@ var answer4 = document.getElementById("answer4");
 var timerCountdown = document.getElementById("timer-div");
 var timerCountdownMessage = document.getElementById("timer-message")
 var timeLeft = 76;
-var penalty = 0;
+var highScores = document.getElementById("high-scores");
+var finalScore = 0;
 
 //questions for the quiz
 const quizQuestions = [
@@ -42,12 +43,12 @@ var questionIndex = 0;
 
 //console.logs to make sure my questions were working correctly
 //console.log(quizQuestions)
-//console.log(quizQuestions[3].question)
+console.log(quizQuestions[3].question)
 //console.log(quizQuestions[4].choices[2])
 
 
 
-//brings up the questions and answers - issue with line 61 (only first two options are clickable)
+//brings up the questions and answers
 function displayQuestion () {
     timer();
     document.querySelector("#question-start").style.display="none";
@@ -68,36 +69,53 @@ function displayQuestion () {
       clickingAnswers[i].addEventListener("click", checkAnswers);
   }
   
+
+
+
+
 //checking if answers are correct
 function checkAnswers(event) {
+    event.preventDefault();
     var rightAnswer = event.target.textContent;
     console.log(rightAnswer);
     var answerMessage = document.createElement("p")
     document.body.append(answerMessage);
+    {
         if (rightAnswer === quizQuestions[questionIndex].correctAnswer) {
             answerMessage.textContent = "Correct!"
     }
     else {
         answerMessage.textContent = "Incorrect!";
-        //penalty = (timeLeft - 10);
-   
+        timeLeft = timeLeft - 10;
     }
     questionIndex++; 
     displayQuestion();
+}
 }
  
     
 //timer function (incomplete)
     function timer() {
-          timeLeft--;  
-        if (timeLeft >= 1) {
-         timerCountdownMessage.textContent = "Timer: " + timeLeft;
-        } else {
-            return
+         var timerInterval = setInterval(function (){
+            timerCountdownMessage.textContent = "Timer: " + timeLeft;
+    if (timeLeft >= 1) {
+            timeLeft--;   
+    }
+     else {
+            clearInterval(timerInterval);
+            highScores();
+            return;
         }
-  1000;   }
+    },
+    1000);
+ }
+ 
   
-    
+ function highScores() {
+    quizBody.style.display = "none"
+ }
+
+ 
 
 document.addEventListener("click", displayQuestion)
 //insert function to start timer when this is pushed
