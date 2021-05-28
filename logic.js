@@ -12,7 +12,7 @@ var answer4 = document.getElementById("answer4");
 var timerCountdown = document.getElementById("timer-div");
 var timerCountdownMessage = document.getElementById("timer-message")
 var timeLeft = 75;
-var highScores = document.getElementById("high-scores");
+var highScore = document.getElementById("high-scores");
 var finalScore = 0;
 
 //questions for the quiz
@@ -48,20 +48,24 @@ var questionIndex = 0;
 
 
 function timer() {
+
+    displayQuestion();
+
+
     var timerInterval = setInterval(function (){
+    timeLeft--; 
        timerCountdownMessage.textContent = "Timer: " + timeLeft;
-{
-    if (timeLeft >= 1 || questionIndex >= 4) {
-       timeLeft--;   
+     
+    if (timeLeft === 0 || questionIndex === 5) {
+        clearInterval(timerInterval);
+        highScores();
+         return;
 }
-else {
-       clearInterval(timerInterval);
-      highScores();
-       return;
-   }
-}
+
+
 },
 1000);
+
 }
 
 //this console.log revealed that timerInterval is increasing after each question
@@ -72,7 +76,7 @@ else {
 
 //brings up the questions and answers
 function displayQuestion () {
-    timer();
+    
     document.querySelector("#question-start").style.display="none";
     document.querySelector("#answersList").style.visibility="visible";
     var questionOutput = quizQuestions[questionIndex].question;
@@ -98,8 +102,8 @@ function checkAnswers(event) {
     event.preventDefault();
     var rightAnswer = event.target.textContent;
     console.log(rightAnswer);
-    var answerMessage = document.createElement("p")
-    document.body.append(answerMessage);
+    var answerMessage = document.createElement("p");
+    answerListEl.append(answerMessage);
     {
         if (rightAnswer === quizQuestions[questionIndex].correctAnswer) {
             answerMessage.textContent = "Correct!"
@@ -110,20 +114,32 @@ function checkAnswers(event) {
     }
     questionIndex++; 
     displayQuestion();
-    if (questionIndex > quizQuestions.length) {
+    if (questionIndex > quizQuestions[questionIndex].length) {
         highScores();
+        return;
     }
 }
 }
 //incomplete - working on this
  function highScores() {
     questionSection.style.display = "none";
+    answerListEl.style.display = "none";
+    highScore.style.display = "block";
     finalScore = timeLeft;
     var scoreMessage = document.createElement("p");
-    quizBody.appendChild(scoreMessage);
+    scoreMessage.innerHTML = "Quiz over! Your score is " + finalScore + "!";
+    highScore.appendChild(scoreMessage);
     scoreMessage.setAttribute("style", "text-align:center");
-    scoreMessage.textContent = "Quiz over! Your score is " + finalScore + "!";
+    
+    scoreForm = document.createElement("form");
+    scoreForm.setAttribute("id", "score-form");
+    highScore.appendChild(scoreForm);
+
+    var scoreInput = document.createElement("input");
+    scoreInput.setAttribute("type", "text");
+    
+
  }
 
-//calling two functions to start - probably not the best way of doing this
-document.addEventListener("click", displayQuestion);
+
+document.querySelector("#question-start").addEventListener("click", timer);
