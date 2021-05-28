@@ -11,7 +11,7 @@ var answer3 = document.getElementById("answer3");
 var answer4 = document.getElementById("answer4");
 var timerCountdown = document.getElementById("timer-div");
 var timerCountdownMessage = document.getElementById("timer-message")
-var timeLeft = 76;
+var timeLeft = 75;
 var highScores = document.getElementById("high-scores");
 var finalScore = 0;
 
@@ -43,9 +43,31 @@ var questionIndex = 0;
 
 //console.logs to make sure my questions were working correctly
 //console.log(quizQuestions)
-console.log(quizQuestions[3].question)
+//console.log(quizQuestions[3].question)
 //console.log(quizQuestions[4].choices[2])
 
+
+function timer() {
+    var timerInterval = setInterval(function (){
+       timerCountdownMessage.textContent = "Timer: " + timeLeft;
+{
+    if (timeLeft >= 1 || questionIndex >= 4) {
+       timeLeft--;   
+}
+else {
+       clearInterval(timerInterval);
+      highScores();
+       return;
+   }
+}
+},
+1000);
+}
+
+//this console.log revealed that timerInterval is increasing after each question
+//how to stop from looping through?
+//console.log(timerInterval);
+//}
 
 
 //brings up the questions and answers
@@ -61,17 +83,15 @@ function displayQuestion () {
     answer2.textContent = (quizQuestions[questionIndex].choices[1]);
     answer3.textContent = (quizQuestions[questionIndex].choices[2]);
     answer4.textContent = (quizQuestions[questionIndex].choices[3]);
-     }
-
+ 
 //adds event listener to each list item - for loop to cycle through
   var clickingAnswers = document.querySelectorAll("li")
-  for (i = 0; i < clickingAnswers.length; i++) {
+  for (i = 1; i < clickingAnswers.length; i++) {
       clickingAnswers[i].addEventListener("click", checkAnswers);
   }
-  
-
-
-
+  if (questionIndex > quizQuestions.length) {
+    return; };
+}
 
 //checking if answers are correct
 function checkAnswers(event) {
@@ -90,34 +110,20 @@ function checkAnswers(event) {
     }
     questionIndex++; 
     displayQuestion();
-}
-}
- 
-    
-//timer function (incomplete)
-    function timer() {
-         var timerInterval = setInterval(function (){
-            timerCountdownMessage.textContent = "Timer: " + timeLeft;
-    if (timeLeft >= 1) {
-            timeLeft--;   
+    if (questionIndex > quizQuestions.length) {
+        highScores();
     }
-     else {
-            clearInterval(timerInterval);
-            highScores();
-            return;
-        }
-    },
-    1000);
- }
- 
-  
+}
+}
+//incomplete - working on this
  function highScores() {
-    quizBody.style.display = "none"
+    questionSection.style.display = "none";
+    finalScore = timeLeft;
+    var scoreMessage = document.createElement("p");
+    quizBody.appendChild(scoreMessage);
+    scoreMessage.setAttribute("style", "text-align:center");
+    scoreMessage.textContent = "Quiz over! Your score is " + finalScore + "!";
  }
 
- 
-
-document.addEventListener("click", displayQuestion)
-//insert function to start timer when this is pushed
-
-//still need to add high scores function + local storage
+//calling two functions to start - probably not the best way of doing this
+document.addEventListener("click", displayQuestion);
