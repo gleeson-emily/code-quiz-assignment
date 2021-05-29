@@ -81,7 +81,7 @@ function displayQuestion () {
   for (i = 0; i < clickingAnswers.length; i++) {
       clickingAnswers[i].addEventListener("click", checkAnswers);
   }
-  if (questionIndex > quizQuestions[questionIndex].question) {
+  if (questionIndex > 5) {
     return; };
   }
 //checking if answers are correct
@@ -99,7 +99,7 @@ function checkAnswers(event) {
         answerMessage.textContent = "Incorrect!";
         timeLeft = timeLeft - 10;
     }
-    if (questionIndex >= quizQuestions[questionIndex].question) {
+    if (questionIndex >= 5) {
         return highScores();
     } else { 
         questionIndex++; 
@@ -109,7 +109,7 @@ function checkAnswers(event) {
 }
 
 //incomplete - working on this
- function highScores() {
+function highScores() {
     questionSection.style.display = "none";
     answerListEl.style.display = "none";
     highScore.style.display = "inline-block";
@@ -129,27 +129,31 @@ function checkAnswers(event) {
     highScore.appendChild(scoreInput);
     
     var saveButton = document.createElement("button");
-    saveButton.setAttribute("type", "submit");
+    saveButton.setAttribute("click", "submit");
+    saveButton.setAttribute("id", "save-button")
     saveButton.innerHTML = "Submit";
     highScore.appendChild(saveButton);
-    document.querySelector("#high-scores").addEventListener("submit", storeScores());
 
+    var savedName = scoreInput.value;
 
-   localStorage.setItem("finalScore", JSON.stringify(finalScore));
-   localStorage.setItem("score-input", scoreInput.value, JSON.stringify(scoreInput));
-   storeScores();
- }
+    localStorage.setItem("finalScore", JSON.stringify(finalScore));
+    localStorage.setItem("score-input", savedName, JSON.stringify(savedName));
 
- function storeScores(e) {
-    e.preventDefault();
+    document.querySelector("#save-button").addEventListener("click", (event) => {
+    event.preventDefault();
+    storeScores(); })
+    }
+
+ function storeScores() {
     document.getElementById("high-scores").innerHTML = "";
     var highScoreList = document.createElement("ol");
     var listedScores = document.createElement("li");
+    highScoreList.textContent = "High Scores";
     highScore.appendChild(highScoreList);
     highScoreList.appendChild(listedScores);
-    listedScores.textContent = JSON.parse(localStorage.getItem("scoreInput")) + JSON.parse(localStorage.getItem("finalScore"));
+    listedScores.textContent = localStorage.getItem("scoreInput") + " " + localStorage.getItem("finalScore");
 
-    
  }
  
 document.querySelector("#question-start").addEventListener("click", timer);
+
