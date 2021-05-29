@@ -64,7 +64,6 @@ function timer() {
 
 //brings up the questions and answers
 function displayQuestion () {
-    
     document.querySelector("#question-start").style.display="none";
     document.querySelector("#answersList").style.display="block";
     var questionOutput = quizQuestions[questionIndex].question;
@@ -88,7 +87,6 @@ function displayQuestion () {
 function checkAnswers(event) {
     event.preventDefault()
     var rightAnswer = event.target.textContent;
-    //console.log(rightAnswer);
     var answerMessage = document.createElement("p");
     answerListEl.append(answerMessage);
     {
@@ -127,6 +125,7 @@ function highScores() {
     scoreInput.setAttribute("type", "text");
     scoreInput.setAttribute("id", "score-input");
     highScore.appendChild(scoreInput);
+    console.log(scoreInput);
     
     var saveButton = document.createElement("button");
     saveButton.setAttribute("click", "submit");
@@ -135,13 +134,14 @@ function highScores() {
     highScore.appendChild(saveButton);
 
     var savedName = scoreInput.value;
-
-    localStorage.setItem("finalScore", JSON.stringify(finalScore));
-    localStorage.setItem("score-input", savedName, JSON.stringify(savedName));
-
+    console.log(scoreInput);
+    
     document.querySelector("#save-button").addEventListener("click", (event) => {
-    event.preventDefault();
-    storeScores(); })
+        event.preventDefault();
+        console.log(scoreInput.value);
+        localStorage.setItem("finalScore", JSON.stringify(finalScore));
+        localStorage.setItem("score-input", scoreInput.value, JSON.stringify(scoreInput.value));
+        storeScores(); })
     }
 
  function storeScores() {
@@ -151,8 +151,7 @@ function highScores() {
     highScoreList.textContent = "High Scores";
     highScore.appendChild(highScoreList);
     highScoreList.appendChild(listedScores);
-    listedScores.textContent = localStorage.getItem("scoreInput") + " " + localStorage.getItem("finalScore");
-
+    listedScores.textContent = localStorage.getItem("score-input") + " - " + localStorage.getItem("finalScore");
  }
  
 document.querySelector("#question-start").addEventListener("click", timer);
