@@ -11,7 +11,7 @@ var answer3 = document.getElementById("answer3");
 var answer4 = document.getElementById("answer4");
 var timerCountdown = document.getElementById("timer-div");
 var timerCountdownMessage = document.getElementById("timer-message")
-var timeLeft = 75;
+var timeLeft = 76;
 var highScore = document.getElementById("high-scores");
 var finalScore = 0;
 
@@ -31,13 +31,14 @@ const quizQuestions = [
     correctAnswer: "==="
 },
 { question: "What year was JavaScript invented?",
-    choices: ["1995", "1991", "1989", "2000"], 
+    choices: ["1991", "1995", "1989", "2000"], 
     correctAnswer: "1995"
 },
 { question: "How would you call a function called functionOne?",
     choices: ["<functionOne>", "functionOne()", "functionOne[call]", "call functionOne"], 
     correctAnswer: "functionOne()"
-},]
+},
+]
 
 var questionIndex = 0;
 
@@ -48,37 +49,24 @@ var questionIndex = 0;
 
 
 function timer() {
-
     displayQuestion();
-
-
     var timerInterval = setInterval(function (){
     timeLeft--; 
-       timerCountdownMessage.textContent = "Timer: " + timeLeft;
-     
+       timerCountdownMessage.textContent = "Timer: " + timeLeft; 
     if (timeLeft === 0 || questionIndex === 5) {
         clearInterval(timerInterval);
         highScores();
          return;
 }
-
-
 },
 1000);
-
 }
-
-//this console.log revealed that timerInterval is increasing after each question
-//how to stop from looping through?
-//console.log(timerInterval);
-//}
-
 
 //brings up the questions and answers
 function displayQuestion () {
     
     document.querySelector("#question-start").style.display="none";
-    document.querySelector("#answersList").style.visibility="visible";
+    document.querySelector("#answersList").style.display="block";
     var questionOutput = quizQuestions[questionIndex].question;
     var answerChoices = quizQuestions[questionIndex].choices;
     questionSection.textContent = questionOutput;
@@ -90,44 +78,44 @@ function displayQuestion () {
  
 //adds event listener to each list item - for loop to cycle through
   var clickingAnswers = document.querySelectorAll("li")
-  for (i = 1; i < clickingAnswers.length; i++) {
+  for (i = 0; i < clickingAnswers.length; i++) {
       clickingAnswers[i].addEventListener("click", checkAnswers);
   }
-  if (questionIndex > quizQuestions.length) {
+  if (questionIndex > quizQuestions[questionIndex].question) {
     return; };
-}
-
+  }
 //checking if answers are correct
 function checkAnswers(event) {
-    event.preventDefault();
+    event.preventDefault()
     var rightAnswer = event.target.textContent;
-    console.log(rightAnswer);
+    //console.log(rightAnswer);
     var answerMessage = document.createElement("p");
     answerListEl.append(answerMessage);
     {
         if (rightAnswer === quizQuestions[questionIndex].correctAnswer) {
-            answerMessage.textContent = "Correct!"
-    }
+            answerMessage.textContent = "Correct!";}
+
     else {
         answerMessage.textContent = "Incorrect!";
         timeLeft = timeLeft - 10;
     }
-    questionIndex++; 
-    displayQuestion();
-    if (questionIndex > quizQuestions[questionIndex].length) {
-        highScores();
-        return;
+    if (questionIndex >= quizQuestions[questionIndex].question) {
+        return highScores();
+    } else { 
+        questionIndex++; 
+        displayQuestion();
     }
 }
 }
+
 //incomplete - working on this
  function highScores() {
     questionSection.style.display = "none";
     answerListEl.style.display = "none";
-    highScore.style.display = "block";
+    highScore.style.display = "inline-block";
     finalScore = timeLeft;
     var scoreMessage = document.createElement("p");
-    scoreMessage.innerHTML = "Quiz over! Your score is " + finalScore + "!";
+    scoreMessage.innerHTML = "Quiz over! Your score is " + finalScore + "! Use the box below to enter your name and save your high score.";
     highScore.appendChild(scoreMessage);
     scoreMessage.setAttribute("style", "text-align:center");
     
@@ -137,9 +125,31 @@ function checkAnswers(event) {
 
     var scoreInput = document.createElement("input");
     scoreInput.setAttribute("type", "text");
+    scoreInput.setAttribute("id", "score-input");
+    highScore.appendChild(scoreInput);
     
+    var saveButton = document.createElement("button");
+    saveButton.setAttribute("type", "submit");
+    saveButton.innerHTML = "Submit";
+    highScore.appendChild(saveButton);
+    document.querySelector("#high-scores").addEventListener("submit", storeScores());
 
+
+   localStorage.setItem("finalScore", JSON.stringify(finalScore));
+   localStorage.setItem("score-input", scoreInput.value, JSON.stringify(scoreInput));
+   storeScores();
  }
 
+ function storeScores(e) {
+    e.preventDefault();
+    document.getElementById("high-scores").innerHTML = "";
+    var highScoreList = document.createElement("ol");
+    var listedScores = document.createElement("li");
+    highScore.appendChild(highScoreList);
+    highScoreList.appendChild(listedScores);
+    listedScores.textContent = JSON.parse(localStorage.getItem("scoreInput")) + JSON.parse(localStorage.getItem("finalScore"));
 
+    
+ }
+ 
 document.querySelector("#question-start").addEventListener("click", timer);
