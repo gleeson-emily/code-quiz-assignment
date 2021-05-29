@@ -53,7 +53,7 @@ function timer() {
     var timerInterval = setInterval(function (){
     timeLeft--; 
        timerCountdownMessage.textContent = "Timer: " + timeLeft; 
-    if (timeLeft === 0 || questionIndex === 5) {
+    if (timeLeft === 0 || questionIndex >= 4) {
         clearInterval(timerInterval);
         highScores();
          return;
@@ -81,7 +81,7 @@ function displayQuestion () {
   for (i = 0; i < clickingAnswers.length; i++) {
       clickingAnswers[i].addEventListener("click", checkAnswers);
   }
-  if (questionIndex > 5) {
+  if (questionIndex >= 4) {
     return; };
   }
 //checking if answers are correct
@@ -99,8 +99,8 @@ function checkAnswers(event) {
         answerMessage.textContent = "Incorrect!";
         timeLeft = timeLeft - 10;
     }
-    if (questionIndex >= 5) {
-        return highScores();
+    if (questionIndex >= 4) {
+        return;
     } else { 
         questionIndex++; 
         displayQuestion();
