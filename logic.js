@@ -133,9 +133,6 @@ function highScores() {
     saveButton.innerHTML = "Submit";
     highScore.appendChild(saveButton);
 
-    var savedName = scoreInput.value;
-    console.log(scoreInput);
-    
     document.querySelector("#save-button").addEventListener("click", (event) => {
         event.preventDefault();
         console.log(scoreInput.value);
@@ -152,7 +149,20 @@ function highScores() {
     highScore.appendChild(highScoreList);
     highScoreList.appendChild(listedScores);
     listedScores.textContent = localStorage.getItem("score-input") + " - " + localStorage.getItem("finalScore");
+
+    var clearScores = document.createElement("button");
+    clearScores.setAttribute("click", "submit");
+    clearScores.setAttribute("id", "clear-button")
+    clearScores.innerHTML = "Clear Scores";
+    highScoreList.appendChild(clearScores);
+
+    document.querySelector("#clear-button").addEventListener ("click", (event) => {
+        event.preventDefault();
+        localStorage.clear();
+        listedScores.remove();
+    }
+    )
+
  }
  
 document.querySelector("#question-start").addEventListener("click", timer);
-
